@@ -741,7 +741,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                 disease_name_translations_current_lang = DISEASE_NAME_TRANSLATIONS.get(st.session_state.language, DISEASE_NAME_TRANSLATIONS.get("en", {}))
                                 displayed_disease_name = disease_name_translations_current_lang.get(predicted_technical_name, predicted_technical_name) # Fallback to technical name
 
-                            st.success(_("model_predict_msg", disease_name=displayed_disease_name))
+                                st.success(_("model_predict_msg", disease_name=displayed_disease_name))
 
                                 # --- Displaying Recommendation ---
                                 disease_specific_recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {})
