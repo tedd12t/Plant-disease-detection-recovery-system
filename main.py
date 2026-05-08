@@ -40,7 +40,7 @@ elif st.session_state.page == 'About':
     st.write("About page content...")
 
 elif st.session_state.page == 'Disease Recognition':
-    # ... your prediction/upload code ...
+    pass # ... your prediction/upload code ...
 
 
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
