@@ -8,6 +8,53 @@ import base64
 st.set_page_config(page_title="Plant Disease Detection And Recovery System", layout="wide") # Hardcoded title for now
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_page_option"
+# --- CSS STYLING ---
+st.markdown("""
+    <style>
+    /* 1. Force all text to be Gold and White with shadows */
+    h1, h2, h3 {
+        color: #F4D03F !important;
+        text-shadow: 2px 2px 4px #000000 !important;
+    }
+    p, li, span, label, .stMarkdown {
+        color: #ffffff !important;
+        text-shadow: 1px 1px 3px #000000 !important;
+    }
+
+    /* 2. Style the File Uploader Box */
+    [data-testid="stFileUploader"] {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        border: 2px dashed #F4D03F !important;
+        border-radius: 15px;
+        padding: 20px;
+    }
+
+    /* 3. Style the "Browse files" button inside the uploader */
+    [data-testid="stFileUploader"] button {
+        background-color: #F4D03F !important;
+        color: black !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-weight: bold !important;
+    }
+
+    /* 4. Style the navigation buttons at the top */
+    .stButton>button {
+        color: #F4D03F !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        border: 2px solid #F4D03F !important;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+
+    /* 5. Fix the Alert box (Please upload image) */
+    .stAlert {
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        color: #F4D03F !important;
+        border: 1px solid #F4D03F !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
 TRANSLATIONS = {
     "en": {
