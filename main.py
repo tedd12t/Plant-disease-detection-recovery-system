@@ -717,9 +717,9 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                 with st.spinner(_("spinner_text")):
                     prediction_result_index = model_prediction(uploaded_test_image, model_data_dict_global)
 
-                        if prediction_result_index is not None:
+                if prediction_result_index is not None:
                             # IMPORTANT: This list MUST be accurate and in the model's output order
-                            technical_class_names_from_model = [
+                         technical_class_names_from_model = [
                                 'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                                 'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',
                                 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',
