@@ -5,6 +5,7 @@ import os
 import base64
 
 # --- 1. UI TEXT TRANSLATIONS ---
+st.set_page_config(page_title="Plant Disease Detection And Recovery System", layout="wide") # Hardcoded title for now
 # 1. Initialize the page state if it's the first time visiting
 if 'page' not in st.session_state:
     st.session_state.page = 'Home'
@@ -40,7 +41,7 @@ elif st.session_state.page == 'About':
 
 elif st.session_state.page == 'Disease Recognition':
     # ... your prediction/upload code ...
-st.set_page_config(page_title="Plant Disease Detection And Recovery System", layout="wide") # Hardcoded title for now
+
 
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
 TRANSLATIONS = {
