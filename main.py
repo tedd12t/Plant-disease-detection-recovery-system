@@ -53,8 +53,15 @@ st.markdown("""
         color: #F4D03F !important;
         border: 1px solid #F4D03F !important;
     }
+     /* 6. Side-by-side Columns Styling */
+    [data-testid="column"] {
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 15px;
+        border-radius: 10px;
+    }
     </style>
     """, unsafe_allow_html=True)
+
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
 TRANSLATIONS = {
     "en": {
@@ -698,16 +705,17 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
     key="widget_file_uploader_recognition" # Or your unique key
 )
         if uploaded_test_image is not None:
-            # Using columns for "Show Image" and "Predict" buttons to be side-by-side
-            col1, col2 = st.columns(2)
+            # 1. Create columns for side-by-side view
+            col1, col2 = st.columns([1, 1]) 
+
             with col1:
-                if st.button(_("show_image_button"), key="widget_button_show_image"):
-                    st.image(uploaded_test_image, caption="Uploaded Image", use_column_width=True)
+                # Display image immediately
+                st.image(uploaded_test_image, caption="Uploaded Image", use_column_width=True)
+
             with col2:
-                if st.button(_("predict_button"), key="widget_button_predict"):
-                    with st.spinner(_("spinner_text")):
-                        # Pass the globally loaded model dictionary
-                        prediction_result_index = model_prediction(uploaded_test_image, model_data_dict_global)
+                # 2. RUN PREDICTION AUTOMATICALLY (No button needed)
+                with st.spinner(_("spinner_text")):
+                    prediction_result_index = model_prediction(uploaded_test_image, model_data_dict_global)
 
                         if prediction_result_index is not None:
                             # IMPORTANT: This list MUST be accurate and in the model's output order
