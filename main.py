@@ -787,8 +787,8 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                     #st.info(_("expert_consultation_disclaimer"))
                                 else:
                                     st.info(_("no_recommendation_available"))
-                            else:
-                                st.error(_("error_prediction_index_range"))
+                         else:
+                             st.error(_("error_prediction_index_range"))
         elif uploaded_test_image is None:
             # Only show this if the model is loaded but no image uploaded yet
             st.info(_("info_upload_image"))
