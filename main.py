@@ -489,16 +489,25 @@ set_page_background(BG_IMAGE_FILE)
 
 
 # --- Model Loading ---
-@st.cache(allow_output_mutation=True, show_spinner=False) # For Streamlit 1.12.0
+@st.cache(allow_output_mutation=True, show_spinner=False)
 def load_my_model():
-    model_path = 'trained_model.h5'  # OR 'trained_model.keras' - ensure this is the correct working one
-    if not os.path.exists(model_path):
-        return {"error": _("error_model_file_not_found", model_path=model_path)}
+    from huggingface_hub import hf_hub_download
+    
+    # 1. Provide your Hugging Face details
+    # Replace 'tedd12t' with your actual HF username if it's different
+    REPO_ID = "TeddyNigus/plant-disease-detector" 
+    FILENAME = "trained_model.h5" 
+    
     try:
+        # 2. Download from Hugging Face
+        model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
+        
+        # 3. Load the model from the downloaded path
         model = tf.keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
-        return {"error": _("error_model_load") + f" (Details: {str(e)})"}
+        # This keeps your existing error handling style
+        return {"error": f"Error loading model from Hugging Face: {str(e)}"}
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
