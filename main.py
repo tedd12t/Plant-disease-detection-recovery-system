@@ -489,13 +489,33 @@ BG_IMAGE_FILE = "background.jpg"
 set_page_background(BG_IMAGE_FILE)
 st.markdown("""
     <style>
-    /* Force all text to white */
-    .stApp, .stMarkdown, h1, h2, h3, p, li, span, label {
-        color: white !important;
+    /* 1. Main Titles (Agricultural Gold) */
+    h1, h2 {
+        color: #F4D03F !important;
+        text-shadow: 2px 2px 4px #000000 !important;
+        font-weight: bold;
     }
-    /* Fix sidebar text color */
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span {
-        color: white !important;
+
+    /* 2. Body Text (White with a strong shadow) */
+    p, li, span, label, .stMarkdown {
+        color: #ffffff !important;
+        text-shadow: 1px 1px 3px #000000 !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* 3. Give the text area a slight dark tint for better reading */
+    .main .block-container {
+        background-color: rgba(0, 0, 0, 0.3); /* Transparent black overlay */
+        border-radius: 20px;
+        padding: 40px !important;
+    }
+
+    /* 4. Make the buttons look like "Glass" */
+    .stButton>button {
+        color: #F4D03F !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        border: 2px solid #F4D03F !important;
+        font-weight: bold;
     }
     </style>
     """, unsafe_allow_html=True)
