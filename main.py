@@ -487,25 +487,18 @@ def _(text_key, **kwargs):
 # --- SET BACKGROUND IMAGE ---
 BG_IMAGE_FILE = "background.jpg"  
 set_page_background(BG_IMAGE_FILE)
-st.markdown(
-    """
+st.markdown("""
     <style>
     /* Force all text to white */
     .stApp, .stMarkdown, h1, h2, h3, p, li, span, label {
         color: white !important;
     }
-    
-    /* Make the buttons at the top look consistent */
-    .stButton>button {
+    /* Fix sidebar text color */
+    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span {
         color: white !important;
-        background-color: rgba(0,0,0,0.5) !important;
-        border: 1px solid white !important;
-        border-radius: 5px;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    """, unsafe_allow_html=True)
 
 # --- Model Loading ---
 @st.cache(allow_output_mutation=True, show_spinner=False)
