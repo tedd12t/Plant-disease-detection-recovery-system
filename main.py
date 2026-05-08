@@ -6,43 +6,8 @@ import base64
 
 # --- 1. UI TEXT TRANSLATIONS ---
 st.set_page_config(page_title="Plant Disease Detection And Recovery System", layout="wide") # Hardcoded title for now
-# 1. Initialize the page state if it's the first time visiting
-if 'page' not in st.session_state:
-    st.session_state.page = 'Home'
-
-# 2. This function changes the page state when a button is clicked
-def set_page(page_name):
-    st.session_state.page = page_name
-
-# 3. Create your navigation buttons (as seen in your screenshot)
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    if st.button("Home"):
-        set_page('Home')
-with col2:
-    if st.button("About"):
-        set_page('About')
-with col3:
-    if st.button("Disease Recognition"):
-        set_page('Disease Recognition')
-with col4:
-    # Your language toggle logic
-    st.button("Switch to Amharic")
-
-# 4. Display the content based on the session_state
-if st.session_state.page == 'Home':
-    st.title("PLANT DISEASE DETECTION AND RECOVERY SYSTEM")
-    st.subheader("Welcome to the PLANT DISEASE DETECTION AND RECOVERY SYSTEM! 🌿🔍")
-    # ... rest of your home page text ...
-
-elif st.session_state.page == 'About':
-    st.write("About page content...")
-
-elif st.session_state.page == 'Disease Recognition':
-    pass # ... your prediction/upload code ...
-
-
+if 'active_tab_key' not in st.session_state:
+    st.session_state.active_tab_key = "home_page_option"
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
 TRANSLATIONS = {
     "en": {
