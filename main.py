@@ -711,7 +711,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 
             with col1:
                 # Displays image immediately on the left
-                st.image(uploaded_test_image, caption=_("Uploaded Image"), use_container_width=True)
+                st.image(uploaded_test_image, caption=_("Uploaded Image"), use_column_width=True)
 
             with col2:
                 # 2. Run prediction automatically
