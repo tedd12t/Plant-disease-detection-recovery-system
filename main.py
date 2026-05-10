@@ -6,7 +6,7 @@ import base64
 
 # --- 1. UI TEXT TRANSLATIONS ---
 st.set_page_config(
-    page_title="የዕፅዋት በሽታ መመርመሪያ", # This will show Amharic on the browser tab
+    page_title="የእፅዋት በሽታን ለይቶ ማወቅ እና ማገገሚያ ስርዓት", # This will show Amharic on the browser tab
     page_icon="🌿",
     layout="wide"
 )
@@ -120,6 +120,23 @@ st.markdown("""
         display: none !important;
     }
     </style>
+    <style>
+    /* Hide the running/loading indicator (the bicycle/pulsing logo) */
+    [data-testid="stStatusWidget"] {
+        visibility: hidden;
+        display: none;
+    }
+
+    /* Optional: Hide the "Made with Streamlit" footer at the bottom too */
+    footer {
+        visibility: hidden;
+    }
+    
+    /* Optional: Hide the top header bar for a cleaner look */
+    header {
+        visibility: hidden;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
@@ -137,7 +154,7 @@ TRANSLATIONS = {
         #"home_disclaimer": "**Disclaimer:** This tool provides preliminary guidance and is not a substitute for professional agronomic advice. For critical concerns, please consult with a local agricultural expert.",
         "home_call_to_action": "Let's protect our crops and ensure healthier harvests together! Get started by navigating to the 'Disease Recognition' page.",
 
-        "about_header": "About This Project",
+        "about_header": "About this Project: ",
         "about_introduction_header": "Introduction",
         "about_introduction_text": "This PLANT DISEASE DETECTION AND RECOVERY SYSTEM was developed to provide an accessible and informative tool for identifying common plant diseases. By leveraging advancements in deep learning and web technologies, we aim to support agricultural communities and gardening enthusiasts in maintaining plant health.",
         "about_technology_header": "Technology Used",
@@ -151,7 +168,7 @@ TRANSLATIONS = {
         "about_feature_info": "- **Detailed Information:** Access information on symptoms, cultural and chemical prevention methods, and recommendations for identified diseases.",
         "about_feature_multilingual": "- **Multilingual Access:** Full application support in English, Amharic, and Tigrinya.",
         "about_developer_header": "About the Developer",
-        "about_developer_text": "This project by **Tedros Nigus** from Grade 10 Boarding School  is an independent project to explore AI in agriculture. My goal is to develop an automated system that can accurately identify common plant diseases from leaf images using a deep learning model and provide functional information in multiple languages.",
+        "about_developer_text": "This project is an independent project by **Tedros Nigus** to explore AI in agriculture. My goal is to develop an automated system that can accurately identify common plant diseases from leaf images using a deep learning model and provide functional information in multiple languages.",
         "about_future_scope_header": "Future Scope",
         "about_future_scope_text": "Potential future enhancements include expanding the disease database, incorporating disease severity assessment, and exploring offline mobile capabilities.",
 
@@ -218,7 +235,7 @@ TRANSLATIONS = {
         "about_feature_info": "- **ዝርዝር መረጃ፦** በታወቁ በሽታዎች ላይ ስላሉ ምልክቶች፣ ባህላዊ እና ኬሚካዊ የመከላከያ ዘዴዎች እና ምክሮች መረጃ ያግኙ።",
         "about_feature_multilingual": "- **የብዙ ቋንቋ ተደራሽነት፦** ሙሉ የመተግበሪያ ድጋፍ በእንግሊዝኛ፣ በአማርኛ እና በትግርኛ።",
         "about_developer_header": "ስለ አዘጋጁ",
-        "about_developer_text": "ይህ ፕሮጀክት በ **ቴድሮስ ንጉስ** ከ10ኛ ክፍል አዳሪ ትምህርት ቤት በግብርና ውስጥ AIን ለመዳሰስ ራሱን ችሎ የተዘጋጀ ፕሮጀክት ነው። አላማዬ ጥልቅ የመማሪያ ሞዴልን በመጠቀም የተለመዱ የዕፅዋት በሽታዎችን ከቅጠል ምስሎች በትክክል ለመለየት እና ተግባራዊ መረጃዎችን በበርካታ ቋንቋዎች ለማቅረብ የሚያስችል አውቶሜትድ ስርዓት ማዘጋጀት ነው።",
+        "about_developer_text": "ይህ ፕሮጀክት በ **ቴድሮስ ንጉስ** በግብርና ውስጥ AIን ለመዳሰስ ራሱን ችሎ የተዘጋጀ ፕሮጀክት ነው። አላማዬ ጥልቅ የመማሪያ ሞዴልን በመጠቀም የተለመዱ የዕፅዋት በሽታዎችን ከቅጠል ምስሎች በትክክል ለመለየት እና ተግባራዊ መረጃዎችን በበርካታ ቋንቋዎች ለማቅረብ የሚያስችል አውቶሜትድ ስርዓት ማዘጋጀት ነው።",
         "about_future_scope_header": "የወደፊት ዕቅድ",
         "about_future_scope_text": "ሊሆኑ የሚችሉ የወደፊት ማሻሻያዎች የበሽታ ዳታቤዝ ማስፋፋት፣ የበሽታን የክብደት መጠን መገምገም እና ከመስመር ውጭ የሞባይል ችሎታዎችን መዳሰስን ያካትታሉ።",
         "dashboard_title": "ዳሽቦርድ",
@@ -284,7 +301,7 @@ TRANSLATIONS = {
         "about_feature_info": "- **ዝርዝራዊ መረዳእታ፦** ብዛዕባ ዝተለለዩ ሕማማት፡ ምልክታቶም፡ ባህላውን ኬሚካላውን መከላኸሊ ሜላታትን ምኽርታትን መረዳእታ ኣክቡ።",
         "about_feature_multilingual": "- **ናይ ብዙሓት ቋንቋታት ተበጻሕነት፦** ምሉእ ናይ መተግበሪ ድጋፍ ብእንግሊዝኛ፡ ኣምሓርኛን ትግርኛን።",
         "about_developer_header": "ብዛዕባ እቲ ኣዳላዊ",
-        "about_developer_text": "እዚ ፕሮጀክት ብ **ቴድሮስ ንጉስ** ካብ 10ይ ክፍሊ ኣሕዳሪ ቤት ትምህርቲ ኣብ ሕርሻ AI ንምድህሳስ ዝዓለመ ናጻ ፕሮጀክት እዩ። ዕላማይ ዓሚቕ ትምህርቲ ሞዴል ተጠቒምካ ካብ ምስሊ ቆፅሊ ልሙዳት ሕማማት ተኽሊ ብትኽክል ከለሊ ዝኽእል ኣውቶማቲክ ስርዓት ምምዕባልን ብብዙሕ ቋንቋታት ተግባራዊ ሓበሬታ ምሃብን እዩ።",
+        "about_developer_text": "እዚ ፕሮጀክት ብ **ቴድሮስ ንጉስ** ኣብ ሕርሻ AI ንምድህሳስ ዝዓለመ ናጻ ፕሮጀክት እዩ። ዕላማይ ዓሚቕ ትምህርቲ ሞዴል ተጠቒምካ ካብ ምስሊ ቆፅሊ ልሙዳት ሕማማት ተኽሊ ብትኽክል ከለሊ ዝኽእል ኣውቶማቲክ ስርዓት ምምዕባልን ብብዙሕ ቋንቋታት ተግባራዊ ሓበሬታ ምሃብን እዩ።",
         "about_future_scope_header": "ናይ መጻኢ ዕላማ",
         "about_future_scope_text": "ዝኽእሉ ናይ መጻኢ መመሓየሺታት፡ ምግፋሕ ናይ ሕማም ዳታቤዝ፡ ምግምጋም ናይ ሕማም ክብደትን ምድህሳስ ናይ ከመይ ጌርካ ብዘይ መስመር ሞባይል ዓቕምታትን የጠቓልሉ።",
         "dashboard_title": "ዳሽቦርድ",
