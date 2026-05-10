@@ -105,6 +105,17 @@ st.markdown("""
         display: none !important;
     }
     </style>
+    <style>
+    /* Hide the link/chain icon next to headers (anchors) */
+    [data-testid="stHeaderAnchor"] {
+        display: none !important;
+    }
+
+    /* Optional: If you use markdown headers like # or ##, this hides those too */
+    .stMarkdown a {
+        display: none !important;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
