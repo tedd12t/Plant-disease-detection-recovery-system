@@ -743,7 +743,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                 'Tomato___Target_Spot', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus',
                                 'Tomato___healthy'
                             ]
-                         if 0 <= prediction_result_index < len(technical_class_names_from_model):
+                            if 0 <= prediction_result_index < len(technical_class_names_from_model):
                                 predicted_technical_name = technical_class_names_from_model[prediction_result_index]
 
                                 # Get the display name for the current language
@@ -798,7 +798,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                     #st.info(_("expert_consultation_disclaimer"))
                                 else:
                                     st.info(_("no_recommendation_available"))
-                         else:
+                            else:
                              st.error(_("error_prediction_index_range"))
         elif uploaded_test_image is None:
             # Only show this if the model is loaded but no image uploaded yet
