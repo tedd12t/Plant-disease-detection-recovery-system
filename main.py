@@ -791,5 +791,5 @@ if uploaded_test_image is not None:
                     else:
                         st.error(_("error_prediction_index_range"))
 
-        elif uploaded_test_image is None:
-            st.info(_("info_upload_image"))
+elif uploaded_test_image is None:
+    st.info(_("info_upload_image"))
