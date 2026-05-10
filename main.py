@@ -123,7 +123,11 @@ TRANSLATIONS = {
         "error_model_file_not_found": "Model file not found at '{model_path}'. Please ensure it's in the correct location.",
         "error_prediction_failed": "Prediction failed. Please check logs or try another image.",
         "info_upload_image": "Please upload an image for prediction.",
-        "error_prediction_index_range": "Prediction index out of range. Please check model output and class_name list."
+        "error_prediction_index_range": "Prediction index out of range. Please check model output and class_name list.",
+        "not_a_leaf": "This does not look like a plant leaf.",
+        "confidence_label": "The Model's Confidence:",
+        "low_confidence_info": "The AI is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.",
+        "uploaded_image_caption": "Uploaded Image"
     },
     "am": { 
         "app_title": "የእፅዋት በሽታን ለይቶ ማወቅ እና ማገገሚያ ስርዓት",
@@ -182,7 +186,11 @@ TRANSLATIONS = {
         "error_model_file_not_found": "የሞዴል ፋይል በ '{model_path}' አልተገኘም። እባክዎ በትክክለኛው ቦታ መሆኑን ያረጋግጡ።",
         "error_prediction_failed": "ትንበያ አልተሳካም። እባክዎ ሎጎችን ይመልከቱ ወይም ሌላ ምስል ይሞክሩ።",
         "info_upload_image": "እባክዎ ለትንበያ ምስል ይስቀሉ።",
-        "error_prediction_index_range": "የትንበያ ኢንዴክስ ከክልል ውጪ ነው። እባክዎ የሞዴሉን ውጤት እና የክፍል ስም ዝርዝር ይመልከቱ።"
+        "error_prediction_index_range": "የትንበያ ኢንዴክስ ከክልል ውጪ ነው። እባክዎ የሞዴሉን ውጤት እና የክፍል ስም ዝርዝር ይመልከቱ።",
+        "not_a_leaf": "ይህ የዕፅዋት ቅጠል አይመስልም።",
+        "confidence_label": "የሞዴሉ የእርግጠኝነት መጠን፦",
+        "low_confidence_info": "አርቲፊሻል ኢንተለጀንሱ (AI) ለመለየት የሚያስችል በቂ እርግጠኝነት የለውም። እባክዎ የአንድ ቅጠል ግልጽ ምስል ይጫኑ።",
+        "uploaded_image_caption": "የተጫነ ምስል"
     },
     "ti": {
         "app_title": "ስርዓት ምፍላጥን ምሕዋይን ሕማማት ተኽሊ",
@@ -241,7 +249,11 @@ TRANSLATIONS = {
         "error_model_file_not_found": "ሞዴል ፋይል ኣብ '{model_path}' ኣይተረኽበን። በጃኹም ኣብቲ ትኽክለኛ ቦታ ምህላዉ ኣረጋግጹ።",
         "error_prediction_failed": "ትንቢት ኣይተሳኸዐን። በጃኹም ነቶም ሎግታት መርምሩ ወይ ካልእ ስእሊ ፈትኑ።",
         "info_upload_image": "በጃኹም ንትንቢት ዝኸውን ስእሊ ስቀሉ።",
-        "error_prediction_index_range": "ናይ ትንቢት ኢንዴክስ ካብቲ ወሰን ወጻኢ እዩ። በጃኹም ነቲ ውጽኢት ሞዴልን ዝርዝር ስም ክፍልን መርምሩ።"
+        "error_prediction_index_range": "ናይ ትንቢት ኢንዴክስ ካብቲ ወሰን ወጻኢ እዩ። በጃኹም ነቲ ውጽኢት ሞዴልን ዝርዝር ስም ክፍልን መርምሩ።",
+        "not_a_leaf": "እዚ ናይ ተኽሊ ቆጽሊ ኣይመስልን።",
+        "confidence_label": "ናይቲ ሞዴል ናይ ምትእምማን መጠን፦",
+        "low_confidence_info": "እቲ ኣርቲፊሻል ኢንተለጀንስ (AI) ንምፍላጥ ዘኽእል እኹል ምትእምማን የብሉን። በጃኹም ሓደ ግልጽ ዝኾነ ናይ ቆጽሊ ስእሊ ጽዓኑ።",
+        "uploaded_image_caption": "ዝተጽዓነ ስእሊ"
     }
 }
 
@@ -721,9 +733,9 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 
                 # 3. THE SMART FILTER (Threshold set to 95%)
                 if confidence < 0.95:
-                    st.error("⚠️ This does not look like a plant leaf.")
-                    st.write(f"**The Model's Confidence:** {confidence:.2%}")
-                    st.info("The AI is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.")
+                    st.error(_("not_a_leaf"))
+                    st.write(f"**{_('confidence_label')}** {confidence:.2%}")
+                    st.info(_("low_confidence_info"))
                 
                 # 4. IF CONFIDENCE IS HIGH, SHOW RESULTS
                 elif prediction_result_index is not None:
@@ -751,7 +763,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 
                         # Display Prediction Success
                         st.success(_("model_predict_msg").format(disease_name=displayed_disease_name))
-                        st.write(f"**Confidence Score:** {confidence:.2%}")
+                        st.write(f"**{_('confidence_label')}** {confidence:.2%}")
 
                         # 5. RECOMMENDATIONS LOGIC
                         recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {}).get(lang, {})
