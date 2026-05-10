@@ -715,14 +715,14 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 
             with col2:
                 # 2. Run prediction automatically
-                st.subheader(_("Analysis & Results"))
+                
                 with st.spinner(_("spinner_text")):
                     prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
                 # 3. THE SMART FILTER (Threshold set to 95%)
                 if confidence < 0.95:
                     st.error("⚠️ This does not look like a plant leaf.")
-                    st.write(f"**AI Confidence:** {confidence:.2%}")
+                    st.write(f"**The Model's Confidence:** {confidence:.2%}")
                     st.info("The AI is not sure enough to give a diagnosis. Please upload a clear, close-up photo of a single plant leaf.")
                 
                 # 4. IF CONFIDENCE IS HIGH, SHOW RESULTS
