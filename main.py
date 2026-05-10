@@ -5,7 +5,11 @@ import os
 import base64
 
 # --- 1. UI TEXT TRANSLATIONS ---
-st.set_page_config(page_title="Plant Disease Detection And Recovery System", layout="wide") # Hardcoded title for now
+st.set_page_config(
+    page_title="የዕፅዋት በሽታ መመርመሪያ", # This will show Amharic on the browser tab
+    page_icon="🌿",
+    layout="wide"
+)
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_page_option"
 # --- CSS STYLING ---
