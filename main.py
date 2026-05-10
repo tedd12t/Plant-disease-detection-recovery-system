@@ -127,7 +127,10 @@ TRANSLATIONS = {
         "not_a_leaf": "This does not look like a plant leaf.",
         "confidence_label": "Confidence Score:",
         "low_confidence_warning": "The Model is providing a suggestion, but confidence is low. Please verify if this matches your leaf.",
-        "uploaded_image_caption": "Uploaded Image"
+        "uploaded_image_caption": "Uploaded Image",
+        "description_label": "Description:",
+        "symptoms_label": "Symptoms:",
+        "prevention_label": "Prevention & Control:"
     },
     "am": { 
         "app_title": "የእፅዋት በሽታን ለይቶ ማወቅ እና ማገገሚያ ስርዓት",
@@ -190,7 +193,10 @@ TRANSLATIONS = {
         "not_a_leaf": "ይህ የዕፅዋት ቅጠል አይመስልም።",
         "confidence_label": "የእርግጠኝነት መጠን፦",
         "low_confidence_warning": "ሞዴሉ ግምት እየሰጠ ነው፤ ነገር ግን እርግጠኝነቱ ዝቅተኛ ነው። እባክዎ ከቅጠልዎ ጋር እንደሚመሳሰል ያረጋግጡ።",
-        "uploaded_image_caption": "የተጫነ ምስል"
+        "uploaded_image_caption": "የተጫነ ምስል",
+        "description_label": "መግለጫ፦",
+        "symptoms_label": "ምልክቶች፦",
+        "prevention_label": "መከላከያ እና ቁጥጥር፦"
     },
     "ti": {
         "app_title": "ስርዓት ምፍላጥን ምሕዋይን ሕማማት ተኽሊ",
@@ -253,7 +259,10 @@ TRANSLATIONS = {
         "not_a_leaf": "እዚ ናይ ተኽሊ ቆጽሊ ኣይመስልን።",
         "confidence_label": "ናይቲ ሞዴል ናይ ምትእምማን መጠን፦",
         "low_confidence_info": "እቲ ሞዴል ንምፍላጥ ዘኽእል እኹል ምትእምማን የብሉን። በጃኹም ሓደ ግልጽ ዝኾነ ናይ ቆጽሊ ስእሊ ጽዓኑ።",
-        "uploaded_image_caption": "ዝተጽዓነ ስእሊ"
+        "uploaded_image_caption": "ዝተጽዓነ ስእሊ",
+        "description_label": "መግለጺ፦",
+        "symptoms_label": "ምልኽታት፦",
+        "prevention_label": "ክልከላን ቁጽጽርን፦"
     }
 }
 
@@ -780,13 +789,13 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                 st.divider()
                                 st.subheader(_("recommendations_subheader"))
                                 if "description" in recommendations:
-                                    st.markdown(f"**Description:** {recommendations['description']}")
+                                    st.markdown(f"**{_('description_label')}** {recommendations['description']}")
                                 if "symptoms_list" in recommendations:
-                                    st.markdown("**Symptoms:**")
+                                    st.markdown(f"**{_('symptoms_label')}**")
                                     for symptom in recommendations["symptoms_list"]:
                                         st.markdown(f"- {symptom}")
                                 if "cultural_control_list" in recommendations:
-                                    st.markdown("**Prevention & Control:**")
+                                    st.markdown(f"**{_('prevention_label')}**")
                                     for control in recommendations["cultural_control_list"]:
                                         st.markdown(f"- {control}")
                             else:
