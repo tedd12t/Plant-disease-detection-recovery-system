@@ -711,7 +711,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 
             with col1:
                 # Displays image immediately on the left
-                st.image(uploaded_test_image, caption=_("Uploaded Image"), use_column_width=True)
+                st.image(uploaded_test_image, caption="Uploaded Image", use_column_width=True)
 
             with col2:
                 # 2. Run prediction automatically
@@ -723,7 +723,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                 if confidence < 0.95:
                     st.error("⚠️ This does not look like a plant leaf.")
                     st.write(f"**The Model's Confidence:** {confidence:.2%}")
-                    st.info("The AI is not sure enough to give a diagnosis. Please upload a clear, close-up photo of a single plant leaf.")
+                    st.info("The AI is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.")
                 
                 # 4. IF CONFIDENCE IS HIGH, SHOW RESULTS
                 elif prediction_result_index is not None:
