@@ -60,6 +60,51 @@ st.markdown("""
         border-radius: 10px;
     }
     </style>
+    <style>
+    /* 1. Style the main File Uploader box */
+    [data-testid="stFileUploader"] {
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        border: 2px dashed #F4D03F !important;
+        border-radius: 20px;
+        padding: 30px;
+        transition: all 0.4s ease-in-out;
+    }
+
+    /* 2. Make it "glow" when you hover over it */
+    [data-testid="stFileUploader"]:hover {
+        border-style: solid !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        box-shadow: 0px 0px 20px rgba(244, 208, 63, 0.3);
+    }
+
+    /* 3. Style the "Browse files" button inside */
+    [data-testid="stFileUploader"] button {
+        background-color: #F4D03F !important;
+        color: #000000 !important;
+        border-radius: 10px !important;
+        font-weight: bold !important;
+        border: none !important;
+        padding: 10px 25px !important;
+    }
+
+    /* 4. Style the "Drag and drop" text */
+    [data-testid="stFileUploader"] section div div {
+        color: #ffffff !important;
+        font-size: 1.1rem !important;
+        font-weight: 500;
+        text-shadow: 1px 1px 2px #000000;
+    }
+
+    /* 5. Change the Cloud Icon color to Gold */
+    [data-testid="stFileUploader"] svg {
+        fill: #F4D03F !important;
+    }
+
+    /* 6. Hide the tiny "Limit 200MB" text to keep it clean */
+    [data-testid="stFileUploader"] small {
+        display: none !important;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
