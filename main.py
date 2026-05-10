@@ -714,18 +714,21 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                 st.image(uploaded_test_image, caption="Uploaded Image", use_column_width=True)
 
             with col2:
-                # 2. RUN PREDICTION AUTOMATICALLY (No button needed)
-                with st.spinner(_("spinner_text")):
-                    prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
+                        st.subheader(_("Analysis & Results"))
+            
+                        # 1. RUN PREDICTION
+                        with st.spinner(_("spinner_text")):
+                prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
-                if confidence < 0.80:  # If the AI is less than 80% sure
-                    st.error("⚠️ This does not look like a plant leaf.")
-                    st.info(f"AI Confidence: {confidence:.2%}. Please upload a clear photo of a leaf showing symptoms.")
-                
-
-                elif prediction_result_index is not None:
-                            # IMPORTANT: This list MUST be accurate and in the model's output order
-                         technical_class_names_from_model = [
+                        # 2. THE SMART FILTER (Threshold set to 95%)
+                        if confidence < 0.95:
+                            st.error("⚠️ This does not look like a plant leaf.")
+                            st.write(f"**AI Confidence:** {confidence:.2%}")
+                            st.info("The AI is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.")
+            
+                        # 3. IF CONFIDENCE IS HIGH (>95%), SHOW RESULTS
+                        elif prediction_result_index is not None:
+                                     technical_class_names_from_model = [
                                 'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                                 'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',
                                 'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',
