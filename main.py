@@ -126,7 +126,7 @@ TRANSLATIONS = {
         "error_prediction_index_range": "Prediction index out of range. Please check model output and class_name list.",
         "not_a_leaf": "This does not look like a plant leaf.",
         "confidence_label": "The Model's Confidence:",
-        "low_confidence_info": "The AI is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.",
+        "low_confidence_info": "The Model is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.",
         "uploaded_image_caption": "Uploaded Image"
     },
     "am": { 
@@ -189,7 +189,7 @@ TRANSLATIONS = {
         "error_prediction_index_range": "የትንበያ ኢንዴክስ ከክልል ውጪ ነው። እባክዎ የሞዴሉን ውጤት እና የክፍል ስም ዝርዝር ይመልከቱ።",
         "not_a_leaf": "ይህ የዕፅዋት ቅጠል አይመስልም።",
         "confidence_label": "የሞዴሉ የእርግጠኝነት መጠን፦",
-        "low_confidence_info": "አርቲፊሻል ኢንተለጀንሱ (AI) ለመለየት የሚያስችል በቂ እርግጠኝነት የለውም። እባክዎ የአንድ ቅጠል ግልጽ ምስል ይጫኑ።",
+        "low_confidence_info": "ሞዴሉ ለመለየት የሚያስችል በቂ እርግጠኝነት የለውም። እባክዎ የአንድ ቅጠል ግልጽ ምስል ይጫኑ።",
         "uploaded_image_caption": "የተጫነ ምስል"
     },
     "ti": {
@@ -252,7 +252,7 @@ TRANSLATIONS = {
         "error_prediction_index_range": "ናይ ትንቢት ኢንዴክስ ካብቲ ወሰን ወጻኢ እዩ። በጃኹም ነቲ ውጽኢት ሞዴልን ዝርዝር ስም ክፍልን መርምሩ።",
         "not_a_leaf": "እዚ ናይ ተኽሊ ቆጽሊ ኣይመስልን።",
         "confidence_label": "ናይቲ ሞዴል ናይ ምትእምማን መጠን፦",
-        "low_confidence_info": "እቲ ኣርቲፊሻል ኢንተለጀንስ (AI) ንምፍላጥ ዘኽእል እኹል ምትእምማን የብሉን። በጃኹም ሓደ ግልጽ ዝኾነ ናይ ቆጽሊ ስእሊ ጽዓኑ።",
+        "low_confidence_info": "እቲ ሞዴል ንምፍላጥ ዘኽእል እኹል ምትእምማን የብሉን። በጃኹም ሓደ ግልጽ ዝኾነ ናይ ቆጽሊ ስእሊ ጽዓኑ።",
         "uploaded_image_caption": "ዝተጽዓነ ስእሊ"
     }
 }
