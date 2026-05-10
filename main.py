@@ -717,7 +717,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
     type=["jpg", "jpeg", "png"],
     key="widget_file_uploader_recognition" # Or your unique key
 )
-if uploaded_test_image is not None:
+        if uploaded_test_image is not None:
             # 1. Create columns for side-by-side view
             col1, col2 = st.columns([1, 1])
 
@@ -762,7 +762,7 @@ if uploaded_test_image is not None:
                         elif confidence > 0.35:
                             # LEVEL 2: YELLOW (Medium Confidence - Your 49% leaf will show here)
                             st.warning(_("low_confidence_warning"))
-                            st.info(f"AI Suggestion: **{displayed_disease_name}**")
+                            st.info(f"Model Suggestion: **{displayed_disease_name}**")
                             st.write(f"**{_('confidence_label')}** {confidence:.2%}")
                         
                         else:
@@ -791,5 +791,5 @@ if uploaded_test_image is not None:
                     else:
                         st.error(_("error_prediction_index_range"))
 
-elif uploaded_test_image is None:
-    st.info(_("info_upload_image"))
+        elif uploaded_test_image is None:
+            st.info(_("info_upload_image"))
