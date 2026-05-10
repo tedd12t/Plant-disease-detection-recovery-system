@@ -598,21 +598,22 @@ def load_my_model():
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
     if "error" in model_data_dict_arg or model_data_dict_arg.get("model") is None:
-        # Error should be displayed by the caller based on model_data_dict_arg
-        return None
+        return None, 0  # Return 0 for confidence
     
     model = model_data_dict_arg["model"]
     try:
         image = tf.keras.preprocessing.image.load_img(test_image_uploader, target_size=(128, 128))
         input_arr = tf.keras.preprocessing.image.img_to_array(image)
-        input_arr = np.array([input_arr]) # Convert single image to batch
-        
+        input_arr = np.array([input_arr])  # Convert single image to batch
+
         prediction = model.predict(input_arr)
-        result_index = np.argmax(prediction)
-        return result_index
+        result_index = int(np.argmax(prediction)) # Get the index
+        confidence = float(np.max(prediction))    # Get the confidence score (0 to 1)
+        
+        return result_index, confidence
     except Exception as e:
-        st.error(_("error_prediction_failed") + f" (Details: {str(e)})") # Show error in app
-        return None
+        st.error(f"Error: {str(e)}")
+        return None, 0
 TAB_KEYS_ORDERED = ["home_page_option", "about_page_option", "disease_recognition_page_option"]
 LANGUAGE_CODES_ORDERED = list(TRANSLATIONS.keys()) # ['en', 'am', 'ti']
 
@@ -715,9 +716,14 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
             with col2:
                 # 2. RUN PREDICTION AUTOMATICALLY (No button needed)
                 with st.spinner(_("spinner_text")):
-                    prediction_result_index = model_prediction(uploaded_test_image, model_data_dict_global)
+                    prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
-                if prediction_result_index is not None:
+                if confidence < 0.80:  # If the AI is less than 80% sure
+                    st.error("⚠️ This does not look like a plant leaf.")
+                    st.info(f"AI Confidence: {confidence:.2%}. Please upload a clear photo of a leaf showing symptoms.")
+                
+
+                elif prediction_result_index is not None:
                             # IMPORTANT: This list MUST be accurate and in the model's output order
                          technical_class_names_from_model = [
                                 'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
@@ -742,6 +748,8 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                 displayed_disease_name = disease_name_translations_current_lang.get(predicted_technical_name, predicted_technical_name) # Fallback to technical name
 
                                 st.success(_("model_predict_msg", disease_name=displayed_disease_name))
+                                st.write(f"**Confidence Score:** {confidence:.2%}")
+                             
 
                                 # --- Displaying Recommendation ---
                                 disease_specific_recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {})
