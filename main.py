@@ -718,7 +718,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
             
                         # 1. RUN PREDICTION
                         with st.spinner(_("spinner_text")):
-                prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
+                            prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
                         # 2. THE SMART FILTER (Threshold set to 95%)
                         if confidence < 0.95:
