@@ -125,8 +125,8 @@ TRANSLATIONS = {
         "info_upload_image": "Please upload an image for prediction.",
         "error_prediction_index_range": "Prediction index out of range. Please check model output and class_name list.",
         "not_a_leaf": "This does not look like a plant leaf.",
-        "confidence_label": "The Model's Confidence:",
-        "low_confidence_info": "The Model is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.",
+        "confidence_label": "Confidence Score:",
+        "low_confidence_warning": "The Model is providing a suggestion, but confidence is low. Please verify if this matches your leaf.",
         "uploaded_image_caption": "Uploaded Image"
     },
     "am": { 
@@ -188,8 +188,8 @@ TRANSLATIONS = {
         "info_upload_image": "እባክዎ ለትንበያ ምስል ይስቀሉ።",
         "error_prediction_index_range": "የትንበያ ኢንዴክስ ከክልል ውጪ ነው። እባክዎ የሞዴሉን ውጤት እና የክፍል ስም ዝርዝር ይመልከቱ።",
         "not_a_leaf": "ይህ የዕፅዋት ቅጠል አይመስልም።",
-        "confidence_label": "የሞዴሉ የእርግጠኝነት መጠን፦",
-        "low_confidence_info": "ሞዴሉ ለመለየት የሚያስችል በቂ እርግጠኝነት የለውም። እባክዎ የአንድ ቅጠል ግልጽ ምስል ይጫኑ።",
+        "confidence_label": "የእርግጠኝነት መጠን፦",
+        "low_confidence_warning": "ሞዴሉ ግምት እየሰጠ ነው፤ ነገር ግን እርግጠኝነቱ ዝቅተኛ ነው። እባክዎ ከቅጠልዎ ጋር እንደሚመሳሰል ያረጋግጡ።",
         "uploaded_image_caption": "የተጫነ ምስል"
     },
     "ti": {
@@ -717,28 +717,20 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
     type=["jpg", "jpeg", "png"],
     key="widget_file_uploader_recognition" # Or your unique key
 )
-        if uploaded_test_image is not None:
+if uploaded_test_image is not None:
             # 1. Create columns for side-by-side view
             col1, col2 = st.columns([1, 1])
 
             with col1:
                 # Displays image immediately on the left
-                st.image(uploaded_test_image, caption="Uploaded Image", use_column_width=True)
+                st.image(uploaded_test_image, caption=_("uploaded_image_caption"), use_column_width=True)
 
             with col2:
                 # 2. Run prediction automatically
-                
                 with st.spinner(_("spinner_text")):
                     prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
-                # 3. THE SMART FILTER (Threshold set to 95%)
-                if confidence < 0.95:
-                    st.error(_("not_a_leaf"))
-                    st.write(f"**{_('confidence_label')}** {confidence:.2%}")
-                    st.info(_("low_confidence_info"))
-                
-                # 4. IF CONFIDENCE IS HIGH, SHOW RESULTS
-                elif prediction_result_index is not None:
+                if prediction_result_index is not None:
                     technical_class_names_from_model = [
                         'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                         'Blueberry___healthy', 'Cherry___(including_sour)___Powdery_mildew', 'Cherry___(including_sour)___healthy',
@@ -761,33 +753,43 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                         disease_name_translations = DISEASE_NAME_TRANSLATIONS.get(lang, DISEASE_NAME_TRANSLATIONS.get("en", {}))
                         displayed_disease_name = disease_name_translations.get(predicted_technical_name, predicted_technical_name)
 
-                        # Display Prediction Success
-                        st.success(_("model_predict_msg").format(disease_name=displayed_disease_name))
-                        st.write(f"**{_('confidence_label')}** {confidence:.2%}")
-
-                        # 5. RECOMMENDATIONS LOGIC
-                        recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {}).get(lang, {})
-                        if recommendations:
-                            st.divider()
-                            st.subheader(_("recommendations_subheader"))
-                            
-                            if "description" in recommendations:
-                                st.markdown(f"**Description:** {recommendations['description']}")
-                            
-                            if "symptoms_list" in recommendations:
-                                st.markdown("**Symptoms:**")
-                                for symptom in recommendations["symptoms_list"]:
-                                    st.markdown(f"- {symptom}")
-                            
-                            if "cultural_control_list" in recommendations:
-                                st.markdown("**Prevention & Control:**")
-                                for control in recommendations["cultural_control_list"]:
-                                    st.markdown(f"- {control}")
+                        # --- TRAFFIC LIGHT DISPLAY ---
+                        if confidence > 0.85:
+                            # LEVEL 1: GREEN (High Confidence)
+                            st.success(f"✅ {_('model_predict_msg').format(disease_name=displayed_disease_name)}")
+                            st.write(f"**{_('confidence_label')}** {confidence:.2%}")
+                        
+                        elif confidence > 0.35:
+                            # LEVEL 2: YELLOW (Medium Confidence - Your 49% leaf will show here)
+                            st.warning(_("low_confidence_warning"))
+                            st.info(f"AI Suggestion: **{displayed_disease_name}**")
+                            st.write(f"**{_('confidence_label')}** {confidence:.2%}")
+                        
                         else:
-                            st.info(_("no_recommendation_available"))
+                            # LEVEL 3: RED (Very Low - Building/University)
+                            st.error(_("not_a_leaf"))
+                            st.write(f"**{_('confidence_label')}** {confidence:.2%}")
+
+                        # --- RECOMMENDATIONS (Only show for Green and Yellow) ---
+                        if confidence > 0.35:
+                            recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {}).get(lang, {})
+                            if recommendations:
+                                st.divider()
+                                st.subheader(_("recommendations_subheader"))
+                                if "description" in recommendations:
+                                    st.markdown(f"**Description:** {recommendations['description']}")
+                                if "symptoms_list" in recommendations:
+                                    st.markdown("**Symptoms:**")
+                                    for symptom in recommendations["symptoms_list"]:
+                                        st.markdown(f"- {symptom}")
+                                if "cultural_control_list" in recommendations:
+                                    st.markdown("**Prevention & Control:**")
+                                    for control in recommendations["cultural_control_list"]:
+                                        st.markdown(f"- {control}")
+                            else:
+                                st.info(_("no_recommendation_available"))
                     else:
                         st.error(_("error_prediction_index_range"))
 
         elif uploaded_test_image is None:
-            # Only show this if no image is uploaded yet
             st.info(_("info_upload_image"))
