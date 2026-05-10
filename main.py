@@ -707,99 +707,75 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 )
         if uploaded_test_image is not None:
             # 1. Create columns for side-by-side view
-            col1, col2 = st.columns([1, 1]) 
+            col1, col2 = st.columns([1, 1])
 
             with col1:
-                # Display image immediately
-                st.image(uploaded_test_image, caption="Uploaded Image", use_column_width=True)
+                # Displays image immediately on the left
+                st.image(uploaded_test_image, caption=_("Uploaded Image"), use_container_width=True)
 
             with col2:
-                        st.subheader(_("Analysis & Results"))
-            
-                        # 1. RUN PREDICTION
-                        with st.spinner(_("spinner_text")):
-                            prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
+                # 2. Run prediction automatically
+                st.subheader(_("Analysis & Results"))
+                with st.spinner(_("spinner_text")):
+                    prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
-                        # 2. THE SMART FILTER (Threshold set to 95%)
-                        if confidence < 0.95:
-                            st.error("⚠️ This does not look like a plant leaf.")
-                            st.write(f"**AI Confidence:** {confidence:.2%}")
-                            st.info("The AI is not sure enough to give a diagnosis. Please upload a clear photo of a single plant leaf.")
-            
-                        # 3. IF CONFIDENCE IS HIGH (>95%), SHOW RESULTS
-                        elif prediction_result_index is not None:
-                                     technical_class_names_from_model = [
-                                'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
-                                'Blueberry___healthy', 'Cherry_(including_sour)___Powdery_mildew', 'Cherry_(including_sour)___healthy',
-                                'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',
-                                'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy', 'Grape___Black_rot',
-                                'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)', 'Grape___healthy',
-                                'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot', 'Peach___healthy',
-                                'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight',
-                                'Potato___Late_blight', 'Potato___healthy', 'Raspberry___healthy', 'Soybean___healthy',
-                                'Squash___Powdery_mildew', 'Strawberry___Leaf_scorch', 'Strawberry___healthy',
-                                'Tomato___Bacterial_spot', 'Tomato___Early_blight', 'Tomato___Late_blight', 'Tomato___Leaf_Mold',
-                                'Tomato___Septoria_leaf_spot', 'Tomato___Spider_mites Two-spotted_spider_mite',
-                                'Tomato___Target_Spot', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus',
-                                'Tomato___healthy'
-                            ]
-                            if 0 <= prediction_result_index < len(technical_class_names_from_model):
-                                predicted_technical_name = technical_class_names_from_model[prediction_result_index]
+                # 3. THE SMART FILTER (Threshold set to 95%)
+                if confidence < 0.95:
+                    st.error("⚠️ This does not look like a plant leaf.")
+                    st.write(f"**AI Confidence:** {confidence:.2%}")
+                    st.info("The AI is not sure enough to give a diagnosis. Please upload a clear, close-up photo of a single plant leaf.")
+                
+                # 4. IF CONFIDENCE IS HIGH, SHOW RESULTS
+                elif prediction_result_index is not None:
+                    technical_class_names_from_model = [
+                        'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
+                        'Blueberry___healthy', 'Cherry___(including_sour)___Powdery_mildew', 'Cherry___(including_sour)___healthy',
+                        'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___Common_rust_',
+                        'Corn_(maize)___Northern_Leaf_Blight', 'Corn_(maize)___healthy', 'Grape___Black_rot',
+                        'Grape___Esca_(Black_Measles)', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)', 'Grape___healthy',
+                        'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot', 'Peach___healthy',
+                        'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight',
+                        'Potato___Late_blight', 'Potato___healthy', 'Raspberry___healthy', 'Soybean___healthy',
+                        'Squash___Powdery_mildew', 'Strawberry___Leaf_scorch', 'Strawberry___healthy',
+                        'Tomato___Target_Spot', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus',
+                        'Tomato___healthy'
+                    ]
+                    
+                    if 0 <= prediction_result_index < len(technical_class_names_from_model):
+                        predicted_technical_name = technical_class_names_from_model[prediction_result_index]
+                        
+                        # Get translated disease name
+                        lang = st.session_state.language
+                        disease_name_translations = DISEASE_NAME_TRANSLATIONS.get(lang, DISEASE_NAME_TRANSLATIONS.get("en", {}))
+                        displayed_disease_name = disease_name_translations.get(predicted_technical_name, predicted_technical_name)
 
-                                # Get the display name for the current language
-                                disease_name_translations_current_lang = DISEASE_NAME_TRANSLATIONS.get(st.session_state.language, DISEASE_NAME_TRANSLATIONS.get("en", {}))
-                                displayed_disease_name = disease_name_translations_current_lang.get(predicted_technical_name, predicted_technical_name) # Fallback to technical name
+                        # Display Prediction Success
+                        st.success(_("model_predict_msg").format(disease_name=displayed_disease_name))
+                        st.write(f"**Confidence Score:** {confidence:.2%}")
 
-                                st.success(_("model_predict_msg", disease_name=displayed_disease_name))
-                                st.write(f"**Confidence Score:** {confidence:.2%}")
-                             
+                        # 5. RECOMMENDATIONS LOGIC
+                        recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {}).get(lang, {})
+                        if recommendations:
+                            st.divider()
+                            st.subheader(_("recommendations_subheader"))
+                            
+                            if "description" in recommendations:
+                                st.markdown(f"**Description:** {recommendations['description']}")
+                            
+                            if "symptoms_list" in recommendations:
+                                st.markdown("**Symptoms:**")
+                                for symptom in recommendations["symptoms_list"]:
+                                    st.markdown(f"- {symptom}")
+                            
+                            if "cultural_control_list" in recommendations:
+                                st.markdown("**Prevention & Control:**")
+                                for control in recommendations["cultural_control_list"]:
+                                    st.markdown(f"- {control}")
+                        else:
+                            st.info(_("no_recommendation_available"))
+                    else:
+                        st.error(_("error_prediction_index_range"))
 
-                                # --- Displaying Recommendation ---
-                                disease_specific_recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {})
-                                recommendations_in_current_lang = disease_specific_recommendations.get(st.session_state.language, disease_specific_recommendations.get("en", {}))
-
-                                if recommendations_in_current_lang:
-                                    st.subheader(_("recommendations_subheader"))
-
-                                    description = recommendations_in_current_lang.get("description")
-                                    if description:
-                                        st.markdown(f"**{_('description_label')}:** {description}")
-
-                                    symptoms_list = recommendations_in_current_lang.get("symptoms_list")
-                                    if symptoms_list:
-                                        st.markdown(f"**{_('symptoms_label')}:**")
-                                        if isinstance(symptoms_list, list):
-                                            for item in symptoms_list:
-                                                st.markdown(f"- {item}")
-                                        else: # If it's a single string
-                                            st.markdown(symptoms_list)
-
-                                    cultural_header = recommendations_in_current_lang.get("cultural_control_header")
-                                    cultural_list = recommendations_in_current_lang.get("cultural_control_list")
-                                    if cultural_header and cultural_list:
-                                        st.markdown(f"**{cultural_header}**")
-                                        if isinstance(cultural_list, list):
-                                            for item in cultural_list:
-                                                st.markdown(f"- {item}")
-                                        else:
-                                            st.markdown(cultural_list)
-                                    
-                                    chemical_header = recommendations_in_current_lang.get("chemical_control_header")
-                                    chemical_text = recommendations_in_current_lang.get("chemical_control_text")
-                                    if chemical_header and chemical_text:
-                                        st.markdown(f"**{chemical_header}**")
-                                        st.markdown(chemical_text) # Use warning for emphasis on chemical use caution
-
-                                    further_info_link = recommendations_in_current_lang.get("further_info_link", "")
-                                    if further_info_link.strip() and not further_info_link.startswith("SEARCH_") and not further_info_link.startswith("PLACEHOLDER_"):
-                                        st.markdown(f"[{_('further_info_label')}]({further_info_link})")
-                                    
-                                    st.markdown("---")
-                                    #st.info(_("expert_consultation_disclaimer"))
-                                else:
-                                    st.info(_("no_recommendation_available"))
-                            else:
-                             st.error(_("error_prediction_index_range"))
         elif uploaded_test_image is None:
-            # Only show this if the model is loaded but no image uploaded yet
+            # Only show this if no image is uploaded yet
             st.info(_("info_upload_image"))
