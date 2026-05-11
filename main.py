@@ -751,7 +751,7 @@ num_navigation_buttons = len(TAB_KEYS_ORDERED) + 1  # Tabs + 1 language switch b
 nav_columns = st.columns(num_navigation_buttons)
 
 # --- FINAL NAVIGATION & LANGUAGE SWITCHER ---
-    for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
+for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
         button_label = _(current_tab_key)
         if st.session_state.active_tab_key == current_tab_key:
             button_label = f"● {button_label}"
