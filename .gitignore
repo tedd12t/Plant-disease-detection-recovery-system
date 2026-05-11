@@ -1,0 +1,26 @@
+# --- Python Trash ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.env
+
+# --- Streamlit ---
+# We keep config.toml for your theme, but ignore secrets
+.streamlit/secrets.toml
+
+# --- OS Trash (Mac/Windows) ---
+.DS_Store
+Thumbs.db
+
+# --- Notebooks Trash ---
+.ipynb_checkpoints/
+
+# --- Large Files (Optional) ---
+# If you ever save local models, don't upload them to GitHub
+*.h5
+*.keras
+*.zip
+*.pkl
