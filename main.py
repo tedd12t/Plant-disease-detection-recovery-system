@@ -673,23 +673,25 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Model Loading ---
-@st.cache_resource(show_spinner=False)
+@st.cache_resource(show_spinner="Downloading Model from Hugging Face...")
 def load_my_model():
     from huggingface_hub import hf_hub_download
-    
-    REPO_ID = "TeddyNigus/plant_disease_detection_model" 
-    FILENAME = "ethio_plant_disease_model.h5" 
-    
+    import tensorflow as tf
+
+    REPO_ID = "TeddyNigus/plant_disease_detection_model"
+    FILENAME = "ethio_plant_disease_model.h5"
+
     try:
-        # 2. Download from Hugging Face
+        # Download from Hugging Face
         model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
         
-        # 3. Load the model from the downloaded path
+        # Load the model
         model = tf.keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
-        # This keeps your existing error handling style
-        return {"error": f"Error loading model from Hugging Face: {str(e)}"}
+        # THIS IS THE IMPORTANT PART: It will show us the REAL error
+        st.error(f"Technical Error Details: {e}")
+        return {"error": str(e)}
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
