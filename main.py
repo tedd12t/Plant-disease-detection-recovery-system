@@ -676,7 +676,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Model Loading ---
-@st.cache_resource(show_spinner="Loading AI Brain...")
+@st.cache_resource(show_spinner="⚡ Connecting to AI Brain... Please wait.")
 def load_my_model():
      # This imports Keras 3
     
