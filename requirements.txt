@@ -1,9 +1,8 @@
-tensorflow-cpu>=2.16.1
-keras>=3.0
+tensorflow==2.15.0
 streamlit
 huggingface_hub
+numpy<2.0.0
 scikit-learn
-numpy
 matplotlib
 seaborn
 pandas
