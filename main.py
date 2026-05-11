@@ -788,33 +788,33 @@ elif st.session_state.active_tab_key == "about_page_option":
     st.markdown(_("about_future_scope_text"))
 
 elif st.session_state.active_tab_key == "disease_recognition_page_option":
-    st.header(_("recognition_header"))
+        st.header(_("recognition_header"))
 
-    # Check again if model loaded properly before showing uploader
-    if "error" in model_data_dict_global or model_data_dict_global.get("model") is None:
-        if "error" not in model_data_dict_global: # If no specific error message from load_my_model
-             st.error(_("error_model_load"))
-    else: 
-        uploaded_test_image = st.file_uploader(
-            label=_("file_uploader_main_label"),   # This gets translated
-            help=_("file_uploader_help_text"),     # This gets translated (tooltip)
-            type=["jpg", "jpeg", "png"],
-            key="widget_file_uploader_recognition" # Or your unique key
-)
-        if uploaded_test_image is not None:
-            # 1. Create columns for side-by-side view
-            col1, col2 = st.columns([1, 1])
+        # 1. Check if model is loaded
+        if "error" in model_data_dict_global or model_data_dict_global.get("model") is None:
+            st.error(_("error_model_load"))
+        else:
+            # 2. THE UPLOADER (Always visible)
+            uploaded_test_image = st.file_uploader(
+                label=_("file_uploader_main_label"), 
+                type=["jpg", "jpeg", "png"],
+                key="widget_file_uploader_recognition"
+            )
 
-            with col1:
-                # Displays image immediately on the left
-                st.image(uploaded_test_image, caption=_("uploaded_image_caption"), use_column_width=True)
+            if uploaded_test_image is not None:
+                # 3. Create columns for side-by-side view
+                col1, col2 = st.columns([1, 1])
 
-            with col2:
-                # 2. Run prediction automatically
-                with st.spinner(_("spinner_text")):
-                    prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
+                with col1:
+                    # Show image immediately
+                    st.image(uploaded_test_image, caption=_("uploaded_image_caption"), use_column_width=True)
 
-                if prediction_result_index is not None:
+                with col2:
+                    st.subheader(_("Analysis & Results"))
+                    with st.spinner(_("spinner_text")):
+                        prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
+
+                    # --- THE SMART FILTER & TRAFFIC LIGHT ---
                     technical_class_names_from_model = [
                         'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                         'Blueberry___healthy', 'Cherry___(including_sour)___Powdery_mildew', 'Cherry___(including_sour)___healthy',
@@ -831,33 +831,24 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                         'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus', 
                         'Tomato___healthy'
                     ]
-                    
+
                     if 0 <= prediction_result_index < len(technical_class_names_from_model):
                         predicted_technical_name = technical_class_names_from_model[prediction_result_index]
-                        
-                        # Get translated disease name
                         lang = st.session_state.language
                         disease_name_translations = DISEASE_NAME_TRANSLATIONS.get(lang, DISEASE_NAME_TRANSLATIONS.get("en", {}))
                         displayed_disease_name = disease_name_translations.get(predicted_technical_name, predicted_technical_name)
 
-                        # --- TRAFFIC LIGHT DISPLAY ---
                         if confidence > 0.85:
-                            # LEVEL 1: GREEN (High Confidence)
                             st.success(f"✅ {_('model_predict_msg').format(disease_name=displayed_disease_name)}")
-                            st.write(f"**{_('confidence_label')}** {confidence:.2%}")
-                        
                         elif confidence > 0.35:
-                            # LEVEL 2: YELLOW (Medium Confidence - Your 49% leaf will show here)
                             st.warning(_("low_confidence_warning"))
-                            st.info(f"Model Suggestion: **{displayed_disease_name}**")
-                            st.write(f"**{_('confidence_label')}** {confidence:.2%}")
-                        
+                            st.info(f"AI Suggestion: **{displayed_disease_name}**")
                         else:
-                            # LEVEL 3: RED (Very Low - Building/University)
                             st.error(_("not_a_leaf"))
-                            st.write(f"**{_('confidence_label')}** {confidence:.2%}")
+                        
+                        st.write(f"**{_('confidence_label')}** {confidence:.2%}")
 
-                        # --- RECOMMENDATIONS (Only show for Green and Yellow) ---
+                        # --- RECOMMENDATIONS ---
                         if confidence > 0.35:
                             recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {}).get(lang, {})
                             if recommendations:
@@ -867,16 +858,13 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                                     st.markdown(f"**{_('description_label')}** {recommendations['description']}")
                                 if "symptoms_list" in recommendations:
                                     st.markdown(f"**{_('symptoms_label')}**")
-                                    for symptom in recommendations["symptoms_list"]:
-                                        st.markdown(f"- {symptom}")
+                                    for s in recommendations["symptoms_list"]: st.markdown(f"- {s}")
                                 if "cultural_control_list" in recommendations:
                                     st.markdown(f"**{_('prevention_label')}**")
-                                    for control in recommendations["cultural_control_list"]:
-                                        st.markdown(f"- {control}")
-                            else:
-                                st.info(_("no_recommendation_available"))
+                                    for c in recommendations["cultural_control_list"]: st.markdown(f"- {c}")
                     else:
                         st.error(_("error_prediction_index_range"))
 
-        elif uploaded_test_image is None:
-            st.info(_("info_upload_image"))
+            else:
+                # This shows when the tab is clicked but no file is uploaded yet
+                st.info(_("info_upload_image"))
