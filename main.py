@@ -15,7 +15,7 @@ st.set_page_config(
 )
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_page_option"
-# --- CSS STYLING ---
+# CSS STYLING
 st.markdown("""
     <style>
     /* 1. Force all text to be Gold and White with shadows */
@@ -68,7 +68,6 @@ st.markdown("""
     }
     </style>
     <style>
-    /* 1. Style the main File Uploader box */
     [data-testid="stFileUploader"] {
         background-color: rgba(0, 0, 0, 0.4) !important;
         border: 2px dashed #F4D03F !important;
@@ -77,14 +76,12 @@ st.markdown("""
         transition: all 0.4s ease-in-out;
     }
 
-    /* 2. Make it "glow" when you hover over it */
     [data-testid="stFileUploader"]:hover {
         border-style: solid !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
         box-shadow: 0px 0px 20px rgba(244, 208, 63, 0.3);
     }
 
-    /* 3. Style the "Browse files" button inside */
     [data-testid="stFileUploader"] button {
         background-color: #F4D03F !important;
         color: #000000 !important;
@@ -93,8 +90,6 @@ st.markdown("""
         border: none !important;
         padding: 10px 25px !important;
     }
-
-    /* 4. Style the "Drag and drop" text */
     [data-testid="stFileUploader"] section div div {
         color: #ffffff !important;
         font-size: 1.1rem !important;
@@ -102,35 +97,29 @@ st.markdown("""
         text-shadow: 1px 1px 2px #000000;
     }
 
-    /* 5. Change the Cloud Icon color to Gold */
     [data-testid="stFileUploader"] svg {
         fill: #F4D03F !important;
     }
 
-    /* 6. Hide the tiny "Limit 200MB" text to keep it clean */
     [data-testid="stFileUploader"] small {
         display: none !important;
     }
     </style>
     <style>
-    /* Hide the link/chain icon next to headers (anchors) */
     [data-testid="stHeaderAnchor"] {
         display: none !important;
     }
 
-    /* Optional: If you use markdown headers like # or ##, this hides those too */
     .stMarkdown a {
         display: none !important;
     }
     </style>
     <style>
-    /* Hide the running/loading indicator (the bicycle/pulsing logo) */
     [data-testid="stStatusWidget"] {
         visibility: hidden;
         display: none;
     }
 
-    /* Optional: Hide the "Made with Streamlit" footer at the bottom too */
     footer {
         visibility: hidden;
     }
@@ -647,7 +636,7 @@ def set_page_background(image_file_path):
 
 # --- INITIALIZE SESSION STATE ---
 if 'language' not in st.session_state:
-    st.session_state.language = 'am' # Default to English language code
+    st.session_state.language = 'em' # Default to English language code
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_tab" # Use the key from TRANSLATIONS
 
