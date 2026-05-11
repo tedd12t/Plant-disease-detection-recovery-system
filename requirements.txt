@@ -1,5 +1,5 @@
 tensorflow-cpu>=2.16.1
-tf-keras
+keras>=3.0
 streamlit
 huggingface_hub
 scikit-learn
