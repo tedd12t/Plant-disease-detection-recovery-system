@@ -676,19 +676,17 @@ st.markdown("""
 @st.cache_resource(show_spinner="Downloading Model from Hugging Face...")
 def load_my_model():
     from huggingface_hub import hf_hub_download
-    import tensorflow as tf
+    import keras  # Use the standalone Keras 3 library
     import os
-
-    # Force Keras to use the compatible loading style
-    os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
     REPO_ID = "TeddyNigus/plant_disease_detection_model"
     FILENAME = "ethio_plant_disease_model.h5"
 
     try:
         model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
-        # Load the model
-        model = tf.keras.models.load_model(model_path)
+        
+        # We use keras.models instead of tf.keras.models
+        model = keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
         st.error(f"Technical Error Details: {e}")
@@ -696,22 +694,26 @@ def load_my_model():
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
+    import keras # Use modern Keras
+    import numpy as np
+    
     if "error" in model_data_dict_arg or model_data_dict_arg.get("model") is None:
-        return None, 0  # Return 0 for confidence
+        return None, 0
     
     model = model_data_dict_arg["model"]
     try:
-        image = tf.keras.preprocessing.image.load_img(test_image_uploader, target_size=(128, 128))
-        input_arr = tf.keras.preprocessing.image.img_to_array(image)
+        # Use keras.utils instead of tf.keras.preprocessing
+        img = keras.utils.load_img(test_image_uploader, target_size=(128, 128))
+        input_arr = keras.utils.img_to_array(img)
         input_arr = np.array([input_arr])  # Convert single image to batch
 
         prediction = model.predict(input_arr)
-        result_index = int(np.argmax(prediction)) # Get the index
-        confidence = float(np.max(prediction))    # Get the confidence score (0 to 1)
+        result_index = int(np.argmax(prediction))
+        confidence = float(np.max(prediction))
         
         return result_index, confidence
     except Exception as e:
-        st.error(f"Error: {str(e)}")
+        st.error(f"Prediction Error: {str(e)}")
         return None, 0
 TAB_KEYS_ORDERED = ["home_page_option", "about_page_option", "disease_recognition_page_option"]
 LANGUAGE_CODES_ORDERED = list(TRANSLATIONS.keys()) # ['en', 'am', 'ti']
