@@ -673,25 +673,25 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Model Loading ---
-@st.cache_resource(show_spinner="Loading AI Model...")
+@st.cache_resource(show_spinner="Connecting to AI Brain...")
 def load_my_model():
     from huggingface_hub import hf_hub_download
-    import tensorflow as tf
-
+    import keras # Use the standalone Keras 3
+    
     REPO_ID = "TeddyNigus/plant_disease_detection_model"
     FILENAME = "ethio_plant_disease_model.h5"
 
     try:
         model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
-        # Use standard tf.keras loading
-        model = tf.keras.models.load_model(model_path)
+        # Load using Keras 3
+        model = keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
         return {"error": str(e)}
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
-    import tensorflow as tf
+    import keras # Use modern Keras
     import numpy as np
     
     if "error" in model_data_dict_arg or model_data_dict_arg.get("model") is None:
@@ -699,11 +699,12 @@ def model_prediction(test_image_uploader, model_data_dict_arg):
     
     model = model_data_dict_arg["model"]
     try:
-        # Go back to tf.keras.preprocessing
-        img = tf.keras.preprocessing.image.load_img(test_image_uploader, target_size=(128, 128))
-        input_arr = tf.keras.preprocessing.image.img_to_array(img)
-        input_arr = np.array([input_arr])  # Convert single image to batch
+        # Preprocess using modern Keras utils
+        img = keras.utils.load_img(test_image_uploader, target_size=(128, 128))
+        input_arr = keras.utils.img_to_array(img)
+        input_arr = np.array([input_arr]) # Convert to batch
 
+        # Predict
         prediction = model.predict(input_arr)
         result_index = int(np.argmax(prediction))
         confidence = float(np.max(prediction))
