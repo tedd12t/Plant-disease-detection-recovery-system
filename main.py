@@ -728,7 +728,7 @@ nav_columns = st.columns(num_navigation_buttons)
 for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
     if nav_columns[i].button(_(current_tab_key), key=f"button_nav_{current_tab_key}"):
         st.session_state.active_tab_key = current_tab_key
-        st.experimental_rerun() # Rerun to update the active tab view immediately
+        st.rerun() # Rerun to update the active tab view immediately
 
 # Language switcher button
 current_language_code = st.session_state.language
