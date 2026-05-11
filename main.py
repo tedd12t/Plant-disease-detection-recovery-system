@@ -647,7 +647,7 @@ def set_page_background(image_file_path):
 
 # --- INITIALIZE SESSION STATE ---
 if 'language' not in st.session_state:
-    st.session_state.language = 'em' # Default to English language code
+    st.session_state.language = 'am' # Default to English language code
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_tab" # Use the key from TRANSLATIONS
 
