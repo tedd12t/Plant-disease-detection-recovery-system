@@ -140,6 +140,30 @@ st.markdown("""
         visibility: hidden;
     }
     </style>
+    <style>
+    /* 1. Hide the chain/link icon (Anchors) */
+    [data-testid="stHeaderAnchor"] {
+        display: none !important;
+    }
+    .stMarkdown a {
+        display: none !important;
+    }
+
+    /* 2. Hide the running bicycle */
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+
+    /* 3. Global Button Style */
+    .stButton>button {
+        color: #F4D03F !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        border: 1px solid #F4D03F !important;
+        border-radius: 10px;
+        width: 100%;
+        transition: all 0.3s;
+    }
+    </style>
     """, unsafe_allow_html=True)
 
 # --- EMBEDDED TRANSLATIONS DICTIONARY ---
@@ -623,7 +647,7 @@ def set_page_background(image_file_path):
 
 # --- INITIALIZE SESSION STATE ---
 if 'language' not in st.session_state:
-    st.session_state.language = 'am' # Default to English language code
+    st.session_state.language = 'em' # Default to English language code
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_tab" # Use the key from TRANSLATIONS
 
@@ -728,9 +752,17 @@ nav_columns = st.columns(num_navigation_buttons)
 
 # Tab-like navigation buttons
 for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
-    if nav_columns[i].button(_(current_tab_key), key=f"button_nav_{current_tab_key}"):
+    # 1. Get the translated label (Home, About, etc.)
+    button_label = _(current_tab_key)
+    
+    # 2. If this tab is the one currently open, add a highlight dot
+    if st.session_state.active_tab_key == current_tab_key:
+        button_label = f"● {button_label}"
+    
+    # 3. Create the button with the highlighted label
+    if nav_columns[i].button(button_label, key=f"nav_btn_{current_tab_key}"):
         st.session_state.active_tab_key = current_tab_key
-        st.rerun() # Rerun to update the active tab view immediately
+        st.rerun()  # Changed from experimental_rerun to rerun
 
 # Language switcher button
 current_language_code = st.session_state.language
