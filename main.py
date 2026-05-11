@@ -762,7 +762,7 @@ for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
             st.rerun()
 
     # Language switcher logic
-    current_lang = st.session_state.language
+current_lang = st.session_state.language
     try:
         current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_lang)
     except:
