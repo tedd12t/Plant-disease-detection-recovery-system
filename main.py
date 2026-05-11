@@ -673,31 +673,21 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Model Loading ---
-@st.cache_resource(show_spinner="Connecting to AI Brain...")
+@st.cache_resource(show_spinner="Loading AI Brain...")
 def load_my_model():
     from huggingface_hub import hf_hub_download
-    import tensorflow as tf
-    import os
-
-    # This line is the magic trick - it tells TensorFlow to use the new Keras 3 engine
-    os.environ["TF_USE_LEGACY_KERAS"] = "0"
-
+    import keras # This imports Keras 3
+    
     REPO_ID = "TeddyNigus/plant_disease_detection_model"
     FILENAME = "ethio_plant_disease_model.h5"
 
     try:
         model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
-        # We use the universal loader
-        model = tf.keras.models.load_model(model_path)
+        # Use keras.models instead of tf.keras.models
+        model = keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
-        # If the first way fails, we try the second way automatically
-        try:
-            import keras
-            model = keras.models.load_model(model_path)
-            return {"model": model}
-        except:
-            return {"error": str(e)}
+        return {"error": str(e)}
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
