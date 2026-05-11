@@ -677,19 +677,20 @@ st.markdown("""
 def load_my_model():
     from huggingface_hub import hf_hub_download
     import tensorflow as tf
+    import os
+
+    # Force Keras to use the compatible loading style
+    os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
     REPO_ID = "TeddyNigus/plant_disease_detection_model"
     FILENAME = "ethio_plant_disease_model.h5"
 
     try:
-        # Download from Hugging Face
         model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
-        
         # Load the model
         model = tf.keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
-        # THIS IS THE IMPORTANT PART: It will show us the REAL error
         st.error(f"Technical Error Details: {e}")
         return {"error": str(e)}
 
