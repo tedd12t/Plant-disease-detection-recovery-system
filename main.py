@@ -795,11 +795,11 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
         if "error" not in model_data_dict_global: # If no specific error message from load_my_model
              st.error(_("error_model_load"))
     else: 
-        uploaded_test_image = st.file_uploader(
-    label=_("file_uploader_main_label"),   # This gets translated
-    help=_("file_uploader_help_text"),     # This gets translated (tooltip)
-    type=["jpg", "jpeg", "png"],
-    key="widget_file_uploader_recognition" # Or your unique key
+    uploaded_test_image = st.file_uploader(
+        label=_("file_uploader_main_label"),   # This gets translated
+        help=_("file_uploader_help_text"),     # This gets translated (tooltip)
+        type=["jpg", "jpeg", "png"],
+        key="widget_file_uploader_recognition" # Or your unique key
 )
         if uploaded_test_image is not None:
             # 1. Create columns for side-by-side view
