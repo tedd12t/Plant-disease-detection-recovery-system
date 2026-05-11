@@ -673,7 +673,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # --- Model Loading ---
-@st.cache(allow_output_mutation=True, show_spinner=False)
+@st.cache_resource(show_spinner=False)
 def load_my_model():
     from huggingface_hub import hf_hub_download
     
