@@ -676,14 +676,14 @@ st.markdown("""
 @st.cache_resource(show_spinner="Connecting to AI Brain...")
 def load_my_model():
     from huggingface_hub import hf_hub_download
-    import keras # Use the standalone Keras 3
+    import keras  # Use the standalone Keras 3
     
     REPO_ID = "TeddyNigus/plant_disease_detection_model"
     FILENAME = "ethio_plant_disease_model.h5"
 
     try:
         model_path = hf_hub_download(repo_id=REPO_ID, filename=FILENAME)
-        # Load using Keras 3
+        # Load using standalone Keras
         model = keras.models.load_model(model_path)
         return {"model": model}
     except Exception as e:
@@ -691,7 +691,7 @@ def load_my_model():
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
-    import keras # Use modern Keras
+    import keras
     import numpy as np
     
     if "error" in model_data_dict_arg or model_data_dict_arg.get("model") is None:
@@ -699,12 +699,12 @@ def model_prediction(test_image_uploader, model_data_dict_arg):
     
     model = model_data_dict_arg["model"]
     try:
-        # Preprocess using modern Keras utils
+        # Preprocess using Keras 3 utils
         img = keras.utils.load_img(test_image_uploader, target_size=(128, 128))
         input_arr = keras.utils.img_to_array(img)
         input_arr = np.array([input_arr]) # Convert to batch
 
-        # Predict
+        # Run Prediction
         prediction = model.predict(input_arr)
         result_index = int(np.argmax(prediction))
         confidence = float(np.max(prediction))
