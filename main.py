@@ -763,23 +763,23 @@ for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
 
     # Language switcher logic
 current_lang = st.session_state.language
-    try:
-        current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_lang)
-    except:
-        current_language_index_in_list = 0
-        st.session_state.language = LANGUAGE_CODES_ORDERED[0]
+try:
+    current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_lang)
+except:
+    current_language_index_in_list = 0
+    st.session_state.language = LANGUAGE_CODES_ORDERED[0]
 
-    next_language_index = (current_language_index_in_list + 1) % len(LANGUAGE_CODES_ORDERED)
-    next_language_code_to_switch_to = LANGUAGE_CODES_ORDERED[next_language_index]
-    next_language_display_name_key = f"lang_name_{next_language_code_to_switch_to}"
+next_language_index = (current_language_index_in_list + 1) % len(LANGUAGE_CODES_ORDERED)
+next_language_code_to_switch_to = LANGUAGE_CODES_ORDERED[next_language_index]
+next_language_display_name_key = f"lang_name_{next_language_code_to_switch_to}"
 
     # Create the Language Button with a unique key
-    if nav_columns[len(TAB_KEYS_ORDERED)].button(
-        _("language_switch_button_text", next_lang_name=_(next_language_display_name_key)),
-        key=f"final_v3_lang_switch_{current_lang}"
-    ):
-        st.session_state.language = next_language_code_to_switch_to
-        st.rerun()
+if nav_columns[len(TAB_KEYS_ORDERED)].button(
+    _("language_switch_button_text", next_lang_name=_(next_language_display_name_key)),
+     key=f"final_v3_lang_switch_{current_lang}"
+):
+    st.session_state.language = next_language_code_to_switch_to
+    st.rerun()
 
 st.markdown("---") # Visual separator
 model_data_dict_global = load_my_model()
