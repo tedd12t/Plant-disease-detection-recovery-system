@@ -787,7 +787,7 @@ for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
     # 5. Create the Button
     if nav_columns[len(TAB_KEYS_ORDERED)].button(
         _("language_switch_button_text", next_lang_name=_(next_language_display_name_key)),
-        key="button_language_switch"
+        key=f"lang_switch_{st.session_state.language}" # <--- This makes it unique
     ):
         st.session_state.language = next_language_code_to_switch_to
         st.rerun()
