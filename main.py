@@ -1,8 +1,11 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
 import os
 import base64
+from huggingface_hub import hf_hub_download
+
+import keras
+import tensorflow as tf
 
 # --- 1. UI TEXT TRANSLATIONS ---
 st.set_page_config(
@@ -675,8 +678,7 @@ st.markdown("""
 # --- Model Loading ---
 @st.cache_resource(show_spinner="Loading AI Brain...")
 def load_my_model():
-    from huggingface_hub import hf_hub_download
-    import keras # This imports Keras 3
+     # This imports Keras 3
     
     REPO_ID = "TeddyNigus/plant_disease_detection_model"
     FILENAME = "ethio_plant_disease_model.h5"
@@ -691,6 +693,7 @@ def load_my_model():
 
 # --- Prediction Function ---
 def model_prediction(test_image_uploader, model_data_dict_arg):
+    test_image_uploader.seek(0)
     import keras
     import numpy as np
     
@@ -809,6 +812,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
 
                 with col1:
                     # Show image immediately
+                    uploaded_test_image.seek(0)
                     st.image(uploaded_test_image, caption=_("uploaded_image_caption"), use_column_width=True)
 
                 with col2:
