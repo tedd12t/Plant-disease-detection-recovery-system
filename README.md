@@ -20,7 +20,7 @@ https://plant-disease-detection-recovery-system.streamlit.app/
 ## 📂 Project Structure
 - `main.py`: The core application script.
 - `notebooks/`: Research and model training process.
-- `assets/`: UI design elements and images.
+- `src/`: UI design elements and images.
 - `requirements.txt`: List of Python dependencies.
 
 ## 📝 How to Run Locally
