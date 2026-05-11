@@ -2,7 +2,7 @@
 
 An AI-powered web application designed for Ethiopian farmers to identify plant diseases and get recovery recommendations in **English, Amharic, and Tigrinya**.
 
-## 🚀 Live Demo
+## 🚀 Live
 https://plant-disease-detection-recovery-system.streamlit.app/
 
 ## ✨ Features
