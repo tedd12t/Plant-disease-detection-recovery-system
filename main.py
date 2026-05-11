@@ -744,7 +744,7 @@ if nav_columns[len(TAB_KEYS_ORDERED)].button(
     key="button_language_switch"
 ):
     st.session_state.language = next_language_code_to_switch_to
-    st.experimental_rerun() # Rerun to apply new language immediately
+    st.rerun()
 
 st.markdown("---") # Visual separator
 model_data_dict_global = load_my_model()
@@ -812,7 +812,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                     st.image(uploaded_test_image, caption=_("uploaded_image_caption"), use_column_width=True)
 
                 with col2:
-                    st.subheader(_("Analysis & Results"))
+            
                     with st.spinner(_("spinner_text")):
                         prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
