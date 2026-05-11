@@ -750,44 +750,33 @@ if 'active_tab_key' not in st.session_state:
 num_navigation_buttons = len(TAB_KEYS_ORDERED) + 1  # Tabs + 1 language switch button
 nav_columns = st.columns(num_navigation_buttons)
 
-# Tab-like navigation buttons
-for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
-    # 1. Get the translated label (Home, About, etc.)
-    button_label = _(current_tab_key)
-    
-    # 2. If this tab is the one currently open, add a highlight dot
-    if st.session_state.active_tab_key == current_tab_key:
-        button_label = f"● {button_label}"
-    
-    # 3. Create the button with the highlighted label
-    if nav_columns[i].button(button_label, key=f"nav_btn_{current_tab_key}"):
-        st.session_state.active_tab_key = current_tab_key
-        st.rerun()  # Changed from experimental_rerun to rerun
+# --- FINAL NAVIGATION & LANGUAGE SWITCHER ---
+    for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
+        button_label = _(current_tab_key)
+        if st.session_state.active_tab_key == current_tab_key:
+            button_label = f"● {button_label}"
+        
+        # Use 'final_v3' in the key to ensure it is unique in the whole file
+        if nav_columns[i].button(button_label, key=f"final_v3_nav_{i}_{current_tab_key}"):
+            st.session_state.active_tab_key = current_tab_key
+            st.rerun()
 
-# --- LANGUAGE SWITCHER LOGIC ---
-    # 1. Define the current language code first
-    current_language_code = st.session_state.language
-
+    # Language switcher logic
+    current_lang = st.session_state.language
     try:
-        # 2. Find where we are in the list of languages
-        current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_language_code)
-    except ValueError:
-        # Fallback if something is wrong
-        st.session_state.language = LANGUAGE_CODES_ORDERED[0]
-        current_language_code = LANGUAGE_CODES_ORDERED[0]
+        current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_lang)
+    except:
         current_language_index_in_list = 0
+        st.session_state.language = LANGUAGE_CODES_ORDERED[0]
 
-    # 3. Calculate the NEXT language in the list
     next_language_index = (current_language_index_in_list + 1) % len(LANGUAGE_CODES_ORDERED)
     next_language_code_to_switch_to = LANGUAGE_CODES_ORDERED[next_language_index]
-
-    # 4. Get the display name key (e.g., "lang_name_am")
     next_language_display_name_key = f"lang_name_{next_language_code_to_switch_to}"
 
-    # 5. Create the Button
+    # Create the Language Button with a unique key
     if nav_columns[len(TAB_KEYS_ORDERED)].button(
         _("language_switch_button_text", next_lang_name=_(next_language_display_name_key)),
-        key=f"lang_switch_{st.session_state.language}" # <--- This makes it unique
+        key=f"final_v3_lang_switch_{current_lang}"
     ):
         st.session_state.language = next_language_code_to_switch_to
         st.rerun()
