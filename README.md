@@ -20,7 +20,7 @@ https://plant-disease-detection-recovery-system.streamlit.app/
 
 This project is powered by the **New Plant Diseases Dataset**, an extensive collection of leaf images used to train the AI model. 
 
-*   **Source:** [New Plant Diseases Dataset (Kaggle)](https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset)
+*   **Source:** https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset
 *   **Total Images:** ~87,000 images.
 *   **Classes:** 38 distinct classes (including healthy and diseased leaves).
 *   **Crops Covered:** Apple, Blueberry, Cherry, Corn, Grape, Orange, Peach, Pepper, Potato, Raspberry, Soybean, Squash, Strawberry, and Tomato.
