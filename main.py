@@ -637,7 +637,7 @@ def _(text_key, **kwargs):
         return text_template # Return unformatted template on error
 
 # --- SET BACKGROUND IMAGE ---
-BG_IMAGE_FILE = add_bg_from_local('src/background.jpg') 
+BG_IMAGE_FILE = 'src/background.jpg'
 set_page_background(BG_IMAGE_FILE)
 st.markdown("""
     <style>
