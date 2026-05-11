@@ -677,10 +677,8 @@ st.markdown("""
 def load_my_model():
     from huggingface_hub import hf_hub_download
     
-    # 1. Provide your Hugging Face details
-    # Replace 'tedd12t' with your actual HF username if it's different
-    REPO_ID = "TeddyNigus/plant-disease-detector" 
-    FILENAME = "trained_model.h5" 
+    REPO_ID = "TeddyNigus/plant_disease_detection_model" 
+    FILENAME = "ethio_plant_disease_model.h5" 
     
     try:
         # 2. Download from Hugging Face
