@@ -765,11 +765,13 @@ for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
         st.rerun()  # Changed from experimental_rerun to rerun
 
 # Language switcher button
-current_language_code = st.session_state.language
-current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_language_code)
-next_language_index = (current_language_index_in_list + 1) % len(LANGUAGE_CODES_ORDERED)
-next_language_code_to_switch_to = LANGUAGE_CODES_ORDERED[next_language_index]
-
+try:
+    # Try to find the index of the current language
+    current_language_index_in_list = LANGUAGE_CODES_ORDERED.index(current_language_code)
+except ValueError:
+    # If it fails (like it is doing now), default to the first language in the list
+    st.session_state.language = LANGUAGE_CODES_ORDERED[0]
+    current_language_index_in_list = 0
 # Get the display name of the *next* language for the button text
 # e.g., if current is 'en', next is 'am', button should say "Switch to Amharic"
 next_language_display_name_key = f"lang_name_{next_language_code_to_switch_to}" # e.g., lang_name_am
