@@ -18,7 +18,6 @@ if 'active_tab_key' not in st.session_state:
 # CSS STYLING
 st.markdown("""
     <style>
-    /* 1. Force all text to be Gold and White with shadows */
     h1, h2, h3 {
         color: #F4D03F !important;
         text-shadow: 2px 2px 4px #000000 !important;
@@ -27,8 +26,6 @@ st.markdown("""
         color: #ffffff !important;
         text-shadow: 1px 1px 3px #000000 !important;
     }
-
-    /* 2. Style the File Uploader Box */
     [data-testid="stFileUploader"] {
         background-color: rgba(0, 0, 0, 0.5) !important;
         border: 2px dashed #F4D03F !important;
@@ -36,7 +33,6 @@ st.markdown("""
         padding: 20px;
     }
 
-    /* 3. Style the "Browse files" button inside the uploader */
     [data-testid="stFileUploader"] button {
         background-color: #F4D03F !important;
         color: black !important;
@@ -45,7 +41,6 @@ st.markdown("""
         font-weight: bold !important;
     }
 
-    /* 4. Style the navigation buttons at the top */
     .stButton>button {
         color: #F4D03F !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
@@ -54,13 +49,12 @@ st.markdown("""
         border-radius: 10px;
     }
 
-    /* 5. Fix the Alert box (Please upload image) */
     .stAlert {
         background-color: rgba(0, 0, 0, 0.6) !important;
         color: #F4D03F !important;
         border: 1px solid #F4D03F !important;
     }
-     /* 6. Side-by-side Columns Styling */
+    
     [data-testid="column"] {
         background-color: rgba(0, 0, 0, 0.3);
         padding: 15px;
@@ -123,14 +117,11 @@ st.markdown("""
     footer {
         visibility: hidden;
     }
-    
-    /* Optional: Hide the top header bar for a cleaner look */
     header {
         visibility: hidden;
     }
     </style>
     <style>
-    /* 1. Hide the chain/link icon (Anchors) */
     [data-testid="stHeaderAnchor"] {
         display: none !important;
     }
@@ -138,12 +129,10 @@ st.markdown("""
         display: none !important;
     }
 
-    /* 2. Hide the running bicycle */
     [data-testid="stStatusWidget"] {
         display: none !important;
     }
 
-    /* 3. Global Button Style */
     .stButton>button {
         color: #F4D03F !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
@@ -207,7 +196,7 @@ TRANSLATIONS = {
         "further_info_label": "Further Information",
         "expert_consultation_disclaimer": "Note: This information is for general guidance. Always consult with a local agricultural expert for specific advice and treatment options suitable for your region and conditions.",
         "no_recommendation_available": "Detailed information for this disease or in your selected language is not yet available.",
-        "language_selectbox_label":  "Language", # Label for the language dropdown (if you add one)
+        "language_selectbox_label":  "Language", # Label for the language dropdown 
         "language_switch_button_text": "Switch to {next_lang_name}", # For the language switch button
         "lang_name_en": "English",
         "lang_name_am": "Amharic",
