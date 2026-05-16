@@ -7,7 +7,7 @@ from huggingface_hub import hf_hub_download
 import keras
 import tensorflow as tf
 
-# --- 1. UI TEXT TRANSLATIONS ---
+# UI TEXT TRANSLATIONS 
 st.set_page_config(
     page_title="የእፅዋት በሽታን ለይቶ ማወቅ እና ማገገሚያ ስርዓት", # This will show Amharic on the browser tab
     page_icon="🌿",
@@ -155,7 +155,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- EMBEDDED TRANSLATIONS DICTIONARY ---
+# EMBEDDED TRANSLATIONS DICTIONARY
 TRANSLATIONS = {
     "en": {
         "app_title": "Plant Disease Detection And Recovery System", # Can be used later if you want dynamic tab title
@@ -600,7 +600,7 @@ DISEASE_RECOMMENDATIONS = {
     }
 }
 
-# --- Function to set background using Base64 ---
+# Function to set background using Base64
 @st.cache(ttl=24*60*60, show_spinner=False) # Cache for 24 hrs for Streamlit 1.12.0
 def get_base64_encoded_img_data(image_path):
     try:
@@ -634,13 +634,13 @@ def set_page_background(image_file_path):
         """
         st.markdown(page_bg_img_css, unsafe_allow_html=True)
 
-# --- INITIALIZE SESSION STATE ---
+# INITIALIZE SESSION STATE
 if 'language' not in st.session_state:
     st.session_state.language = 'em' # Default to English language code
 if 'active_tab_key' not in st.session_state:
     st.session_state.active_tab_key = "home_tab" # Use the key from TRANSLATIONS
 
-# --- TRANSLATION FUNCTION ---
+# TRANSLATION FUNCTION
 def _(text_key, **kwargs):
     # Fallback: current lang -> english -> key itself (if key not found even in English)
     current_lang_translations = TRANSLATIONS.get(st.session_state.language, TRANSLATIONS.get("en", {}))
@@ -652,33 +652,26 @@ def _(text_key, **kwargs):
         print(f"Warning: Formatting key error for UI text key '{text_key}' in language '{st.session_state.language}': {e}. Using unformatted text.")
         return text_template # Return unformatted template on error
 
-# --- SET BACKGROUND IMAGE ---
+# SET BACKGROUND IMAGE
 BG_IMAGE_FILE = 'src/background.jpg'
 set_page_background(BG_IMAGE_FILE)
 st.markdown("""
     <style>
-    /* 1. Main Titles (Agricultural Gold) */
     h1, h2 {
         color: #F4D03F !important;
         text-shadow: 2px 2px 4px #000000 !important;
         font-weight: bold;
     }
-
-    /* 2. Body Text (White with a strong shadow) */
     p, li, span, label, .stMarkdown {
         color: #ffffff !important;
         text-shadow: 1px 1px 3px #000000 !important;
         font-size: 1.1rem !important;
     }
-
-    /* 3. Give the text area a slight dark tint for better reading */
     .main .block-container {
         background-color: rgba(0, 0, 0, 0.3); /* Transparent black overlay */
         border-radius: 20px;
         padding: 40px !important;
     }
-
-    /* 4. Make the buttons look like "Glass" */
     .stButton>button {
         color: #F4D03F !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
@@ -688,7 +681,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- Model Loading ---
+# Model Loading
 @st.cache_resource(show_spinner="⚡ Connecting to AI Brain... Please wait.")
 def load_my_model():
      # This imports Keras 3
@@ -704,7 +697,7 @@ def load_my_model():
     except Exception as e:
         return {"error": str(e)}
 
-# --- Prediction Function ---
+# Prediction Function
 def model_prediction(test_image_uploader, model_data_dict_arg):
     test_image_uploader.seek(0)
     import keras
@@ -739,7 +732,7 @@ if 'active_tab_key' not in st.session_state:
 num_navigation_buttons = len(TAB_KEYS_ORDERED) + 1  # Tabs + 1 language switch button
 nav_columns = st.columns(num_navigation_buttons)
 
-# --- FINAL NAVIGATION & LANGUAGE SWITCHER ---
+# FINAL NAVIGATION & LANGUAGE SWITCHER
 for i, current_tab_key in enumerate(TAB_KEYS_ORDERED):
         button_label = _(current_tab_key)
         if st.session_state.active_tab_key == current_tab_key:
@@ -816,11 +809,9 @@ elif st.session_state.active_tab_key == "about_page_option":
 elif st.session_state.active_tab_key == "disease_recognition_page_option":
         st.header(_("recognition_header"))
 
-        # 1. Check if model is loaded
         if "error" in model_data_dict_global or model_data_dict_global.get("model") is None:
             st.error(_("error_model_load"))
         else:
-            # 2. THE UPLOADER (Always visible)
             uploaded_test_image = st.file_uploader(
                 label=_("file_uploader_main_label"), 
                 type=["jpg", "jpeg", "png"],
@@ -828,11 +819,9 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
             )
 
             if uploaded_test_image is not None:
-                # 3. Create columns for side-by-side view
                 col1, col2 = st.columns([1, 1])
 
                 with col1:
-                    # Show image immediately
                     uploaded_test_image.seek(0)
                     st.image(uploaded_test_image, caption=_("uploaded_image_caption"), use_column_width=True)
 
@@ -841,7 +830,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                     with st.spinner(_("spinner_text")):
                         prediction_result_index, confidence = model_prediction(uploaded_test_image, model_data_dict_global)
 
-                    # --- THE SMART FILTER & TRAFFIC LIGHT ---
+                    # THE SMART FILTER & TRAFFIC LIGHT 
                     technical_class_names_from_model = [
                         'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy',
                         'Blueberry___healthy', 'Cherry___(including_sour)___Powdery_mildew', 'Cherry___(including_sour)___healthy',
@@ -875,7 +864,7 @@ elif st.session_state.active_tab_key == "disease_recognition_page_option":
                         
                         st.write(f"**{_('confidence_label')}** {confidence:.2%}")
 
-                        # --- RECOMMENDATIONS ---
+                        # RECOMMENDATIONS
                         if confidence > 0.35:
                             recommendations = DISEASE_RECOMMENDATIONS.get(predicted_technical_name, {}).get(lang, {})
                             if recommendations:
